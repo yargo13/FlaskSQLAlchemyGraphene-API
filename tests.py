@@ -21,7 +21,7 @@ def init_db():
     db_session.add(startup)
     db_session.commit()
 
-from requests import put, get, delete
+from requests import get, post
 
 init_db()
 
@@ -38,3 +38,27 @@ print(get('''http://localhost:5000/graphql?query={
     }
   }
 }''').json())
+
+print(post('http://localhost:5000/graphql', json={"query":'''mutation {
+  createTodo(item:"rock this", person:"Yargo"){
+    todo {
+      item
+    }
+    ok
+  }
+}'''}).json())
+
+print(post('http://localhost:5000/graphql', json={"query":'''mutation {
+	deleteTodo(item:"rock this"){
+    ok
+  }
+}'''}).json())
+
+print(post('http://localhost:5000/graphql', json={"query":'''mutation {
+  updateTodo(item:"build a startup",person:"Matheus"){
+    todo{
+      item, personId
+    }
+    ok
+  }
+}'''}).json())
